@@ -60,32 +60,31 @@ function createPath(r) {
   const points = curve.getPoints(50);
   // 画线
   const line_geometry = new THREE.BufferGeometry().setFromPoints(points);
-  
+
   const line_material = new THREE.LineBasicMaterial({
     color: 0x0000ff,
     transparent: true,
     opacity: 0,
   });
-  
+
   // Create the final object to add to the scene
   const line = new THREE.Line(line_geometry, line_material);
-  
-  scene.add(line);
-  return curve
-}
-const curve=createPath(66)
-const curve2=createPath(200)
 
+  scene.add(line);
+  return curve;
+}
+const curve = createPath(66);
+const curve2 = createPath(200);
 
 // camera.lookAt(obj2.position);
 // 创建光源
-const light = new THREE.PointLight( 0xffffff );
+const light = new THREE.PointLight(0xffffff);
 // light.position.set(0, 0, 100);
 // 设置光源照射的强度
 light.intensity = 99999;
 light.castShadow = true;
 // 光照距离,默认500
-light.shadow.camera.far = 1000 // default
+light.shadow.camera.far = 1000; // default
 scene.add(light);
 
 // const pointLightHelper = new THREE.PointLightHelper( light, 11,0xff0000 );
@@ -99,11 +98,24 @@ scene.add(light);
 
 const controls = new OrbitControls(camera, renderer.domElement, scene);
 
-let pos1=0
-let pos2=0
+function controlsAnimate() {
+  requestAnimationFrame(controlsAnimate);
+
+  // required if controls.enableDamping or controls.autoRotate are set to true
+  controls.update();
+
+  renderer.render(scene, camera);
+}
+
+controlsAnimate();
+
+let pos1 = 0;
+let pos2 = 0;
+
+let animateId;
 
 function animate() {
-  requestAnimationFrame(animate);
+  animateId = requestAnimationFrame(animate);
 
   obj.rotation.y -= 0.1;
 
@@ -119,13 +131,13 @@ function animate() {
   //   light.position.z += 0.64;
   // }
 
-  if(pos2>=1) pos2=0
-  pos2+=0.0005
-  curve2.getPointAt(pos2,light.position); // 当前点在线条上的位置百分比
+  if (pos2 >= 1) pos2 = 0;
+  pos2 += 0.0005;
+  curve2.getPointAt(pos2, light.position); // 当前点在线条上的位置百分比
 
-  if(pos1>=1) pos1=0
-  pos1+=0.002
-  curve.getPointAt(pos1,obj2.position); // 当前点在线条上的位置百分比
+  if (pos1 >= 1) pos1 = 0;
+  pos1 += 0.002;
+  curve.getPointAt(pos1, obj2.position); // 当前点在线条上的位置百分比
 
   // if(obj2.position.z<=0){
   //   obj2.position.x-=0.22
@@ -137,10 +149,18 @@ function animate() {
   // }else{
   //   obj2.position.z+=0.22
   // }
-  controls.update();
+  // controls.update();
 
   renderer.render(scene, camera);
 }
-
 animate();
 
+const pause = () => {
+  cancelAnimationFrame(animateId);
+};
+document.getElementById("pause").addEventListener("click", pause);
+
+document.getElementById("start").addEventListener("click", () => {
+  pause();
+  animate();
+});
