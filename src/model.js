@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import publicPath from "./publicPath.js";
 
 let camera, scene, renderer;
 
@@ -23,11 +24,11 @@ const light = new THREE.AmbientLight(0xffffff, 5);
 scene.add(light);
 
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("/droid/gltf/");
+dracoLoader.setDecoderPath(`${publicPath}/droid/gltf/`);
 
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader);
-loader.setPath("/models/");
+loader.setPath(`${publicPath}/models/`);
 loader.load("Soldier.glb", function (gltf) {
   console.log("gltf:", gltf);
   const model = gltf.scene;

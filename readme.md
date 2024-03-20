@@ -1,5 +1,3 @@
-threejs 
+threejs学习demo
 
-模拟地月系统
-
-`npx vite` or `npm i&&npm start`
+本地启动 `npx http-server`

@@ -2,6 +2,7 @@ import * as THREE from "three";
 
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+import publicPath from "./publicPath.js";
 
 let camera, scene, renderer;
 
@@ -22,7 +23,7 @@ scene = new THREE.Scene();
 material = new THREE.MeshNormalMaterial({color:0x00ffff});
 
 const loader = new FontLoader();
-loader.load("/fonts/XuandongKaishu_Regular.json", function (font) {
+loader.load(`${publicPath}/fonts/XuandongKaishu_Regular.json`, function (font) {
   geometry = new TextGeometry("HELLO 哈喽", {
     font: font,
   });
